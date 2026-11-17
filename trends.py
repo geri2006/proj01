@@ -176,7 +176,26 @@ def find_centroid(polygon):
     >>> find_centroid([p1, p2, p1])
     (1, 2, 0)
     """
-    raise NotImplementedError("find_centroid is not implemented yet")
+    area = 0.0
+    cx = 0.0
+    cy = 0.0
+
+    for i in range(len(polygon) - 1):
+        x0, y0 = latitude(polygon[i]), longitude(polygon[i])
+        x1, y1 = latitude(polygon[i + 1]), longitude(polygon[i + 1])
+
+        a = x0 * y1 - x1 * y0
+        area += a
+        cx += (x0 + x1) * a
+        cy += (y0 + y1) * a
+
+    area = area / 2.0
+    if area == 0:
+        return latitude(polygon[0]), longitude(polygon[0]), 0
+    
+    cx = cx / (6.0 * area)
+    cy = cy / (6.0 * area)
+    return cx, cy, abs(area)
 
 
 def find_center(polygons):
@@ -200,7 +219,16 @@ def find_center(polygons):
     >>> round(longitude(hi), 5)
     -156.21763
     """
-    raise NotImplementedError("find_center is not implemented yet")
+    weighted_lat = 0.0
+    weighted_lon = 0.0
+    total_area = 0.0
+
+    for polygon in polygons:
+        lat, lon, area = find_centroid(polygon)
+        weighted_lat += lat * area
+        weighted_lon += lon * area
+        total_area += area
+    return make_position(weighted_lat / total_area, weighted_lon / total_area)
 
 
 # Milestone 4: The Mood of the Nation
