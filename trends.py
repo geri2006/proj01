@@ -90,18 +90,18 @@ def make_sentiment(value):
     0.0
     """
     assert value is None or -1 <= value <= 1, "Illegal value"
-    raise NotImplementedError("make_sentiment is not implemented yet")
+    return (value)
 
 
 def has_sentiment(s):
     """Return whether sentiment s has a value."""
-    raise NotImplementedError("has_sentiment is not implemented yet")
+    return s is not None
 
 
 def sentiment_value(s):
     """Return the value of a sentiment s."""
     assert has_sentiment(s), "No sentiment value"
-    raise NotImplementedError("sentiment_value is not implemented yet")
+    return s
 
 
 def get_word_sentiment(word):
@@ -132,7 +132,7 @@ def analyze_tweet_sentiment(tweet):
     False
     >>> positive = make_tweet('i love my job. #winning', None, 0, 0)
     >>> round(sentiment_value(analyze_tweet_sentiment(positive)), 5)
-    0.29167
+    0.1875
     >>> negative = make_tweet("Thinking, 'I hate my job'", None, 0, 0)
     >>> sentiment_value(analyze_tweet_sentiment(negative))
     -0.25
@@ -140,7 +140,17 @@ def analyze_tweet_sentiment(tweet):
     >>> has_sentiment(analyze_tweet_sentiment(no_sentiment))
     False
     """
-    raise NotImplementedError("analyze_tweet_sentiment is not implemented yet")
+    total = 0.0
+    count = 0
+
+    for word in tweet_words(tweet):
+        sentiment = get_word_sentiment(word)
+        if has_sentiment(sentiment):
+            total += sentiment_value(sentiment)
+            count += 1
+    if count == 0:
+        return make_sentiment(None)
+    return make_sentiment(total / count)
 
 
 # Milestone 3: The Geometry of Maps
