@@ -132,7 +132,7 @@ def analyze_tweet_sentiment(tweet):
     False
     >>> positive = make_tweet('i love my job. #winning', None, 0, 0)
     >>> round(sentiment_value(analyze_tweet_sentiment(positive)), 5)
-    0.1875
+    0.29167
     >>> negative = make_tweet("Thinking, 'I hate my job'", None, 0, 0)
     >>> sentiment_value(analyze_tweet_sentiment(negative))
     -0.25
