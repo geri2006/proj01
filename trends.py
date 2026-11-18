@@ -280,7 +280,7 @@ def group_tweets_by_state(tweets):
     >>> tweet_string(ca_tweets[0])
     '"Welcome to San Francisco" @ (38, -122)'
     """
-    tweets_by_state = {
+    tweets_by_state = {}
     state_centers = {state: find_center(polygons) for state, polygons in us_states.items()}
 
     for tweet in tweets:
@@ -353,7 +353,9 @@ def find_cell(position, size):
     >>> find_cell(make_position(40.0, -74.0), 2)
     (20, -37)
     """
-    raise NotImplementedError("find_cell is not implemented yet")
+    row = int(latitude(position) // size)
+    column = int(longitude(position) // size)
+    return (row, column)
 
 
 def group_tweets_by_cell(tweets, size):
@@ -373,8 +375,19 @@ def group_tweets_by_cell(tweets, size):
     >>> len(grouped[(37, -123)])
     2
     """
-    raise NotImplementedError("group_tweets_by_cell is not implemented yet")
+    tweets_by_cell = {}
+    
+    for tweet in tweets:
+        cell = find_cell(tweet_location(tweet), size)
+        if cell not in tweets_by_cell:
+            tweets_by_cell[cell] = []
+        tweets_by_cell[cell].append(tweet)
 
+    return tweets_by_cell
+
+    #Antworten auf die 3 Fragen: 1. meisten Tweets aus dicht besiedelten Gebieten, dünn besiedelte Gebiete tragen kaum etwas zu den Ergebnissen bei
+                                #2. Texas 
+                                #3. weil eine einzelne Gitterzelle viel weniger Tweets enthält als der gesamte Bundesstaat
 
 # Additions
 
