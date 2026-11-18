@@ -402,7 +402,21 @@ def most_talkative_state(term):
     >>> most_talkative_state('sandwich')
     'CA'
     """
-    raise NotImplementedError("most_talkative_state is not implemented yet")
+    tweets = load_tweets(make_tweet, term)
+    tweets_by_state = group_tweets_by_state(tweets)
+    
+
+    best_state = None
+    max_count = 0
+    
+    for state in sorted(tweets_by_state):
+        count = len(tweets_by_state[state])
+        if count > max_count:
+            max_count = count
+            best_state = state
+
+    return best_state
+
 
 
 def group_tweets_by_hour(tweets):
@@ -431,7 +445,12 @@ def group_tweets_by_hour(tweets):
     >>> sum(len(tweets) for tweets in group_tweets_by_hour([]).values())
     0
     """
-    raise NotImplementedError("group_tweets_by_hour is not implemented yet")
+    tweets_by_hour = {hour: [] for hour in range(24)}
+
+    for tweet in tweets:
+        hour = tweet_time(tweet).hour
+        tweets_by_hour[hour].append(tweet)
+    return tweets_by_hour
 
 
 if __name__ == "__main__":
